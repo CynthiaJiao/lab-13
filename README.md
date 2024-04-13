@@ -1,3 +1,3 @@
-# lab-11-inference-smoking
+# lab-12-colonizing mars
 
-Materials for lab 11
+Materials for lab 12
