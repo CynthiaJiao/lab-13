@@ -1,4 +1,4 @@
-Lab 11 - Smoking during pregnancy
+Lab 12 - Colonizing Mars
 ================
 Insert your name here
 Insert date here
@@ -8,7 +8,6 @@ Insert date here
 ``` r
 library(tidyverse) 
 library(tidymodels)
-library(openintro)
 ```
 
 ### Exercise 1
