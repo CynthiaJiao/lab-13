@@ -1,5 +1,5 @@
 ---
-title: "Lab 12 - Colonizing Mars"
+title: "Lab 13 - Colonizing Mars"
 author: "Insert your name here"
 date: "Insert date here"
 output: github_document
