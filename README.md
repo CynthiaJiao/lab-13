@@ -1,3 +1,3 @@
-# lab-12-colonizing mars
+# lab-13-colonizing mars
 
-Materials for lab 12
+Materials for lab 13
