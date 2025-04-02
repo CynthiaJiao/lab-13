@@ -61,14 +61,7 @@ roleD <- sample(c("engineer", "scientist", "medic"),
 
 roleE <- sample(roleB, size = 100, replace = FALSE)
 
-## Hey Mason, I am not understanding how the codes above work, so I just did the below, which seems to achieve the same goal we intended?
-
-## adding randomized role variable to df_colonist
-roles <- c("Scientist", "Farmer", "Medic", "Engineer", "Cook")
-
-# Randomly assign one role to each colonist
-set.seed(123)  # for reproducibility
-df_colonists$role <- sample(roles, size = nrow(df_colonists), replace = TRUE)
+## Hey Mason, I am not understanding how the codes above work, so I just did things below, which seems to achieve the same goal we intended?
 
 
 ## in addition to engineer, scientist, and medic, a colony probably needs workers to get the work done, so adding workers to the role variable...
@@ -117,7 +110,7 @@ ggplot(df_colonists, aes(x = age, y = technical_skills)) +
   theme_minimal()
 
 ```
-Engineer probably have the highest problem solving abilities, since solving problem is really a large part of their job... Then scientist and medic have second and third highest problem solving abilities, followed by workers, who need more instructions to get work done.
+Engineer probably have the highest problem solving abilities, since solving problem is really a large part of their job... Then scientist and medic have second and third highest problem solving abilities, followed by workers, who need more instructions to get work done. I assume the sd across all 4 roles are the same, as the variance within each role population should probably be the same.
 ```{r}
 ##since I have 4 levels in role...
 
@@ -206,6 +199,7 @@ df_all <- bind_rows(
   })
 )
 
+## extract sd and mean
 summary_df <- df_all %>%
   group_by(planet) %>%
   summarise(
