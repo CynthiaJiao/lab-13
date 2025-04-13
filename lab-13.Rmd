@@ -2,7 +2,7 @@
 title: "Lab 13 - Colonizing Mars"
 author: "Cynthia Jiao"
 date: "3/31/2025"
-output: github_document
+output: md_document
 ---
 
 ### Load packages and data

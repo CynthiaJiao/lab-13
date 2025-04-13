@@ -1,213 +1,187 @@
-Lab 13 - Colonizing Mars
-================
-Cynthia Jiao
-3/31/2025
-
 ### Load packages and data
 
-``` r
-library(DT)
-library(tidyverse) 
-library(MASS)
-library(ggplot2)
-```
+    library(DT)
+    library(tidyverse) 
+    library(MASS)
+    library(ggplot2)
 
 ### Exercise 1 Simulating Our Colonists
 
 The distribution of age resembles a normal distribution, because rnorm
 function is to extract data from a normal distribution.
 
-``` r
-set.seed(123)
-age <- rnorm(100, mean = 30, sd = 5)
+    set.seed(123)
+    age <- rnorm(100, mean = 30, sd = 5)
 
-df_colonists <- data.frame(id = 1:100, # this is our id column
-                            age = age ) # add the age column here
-
-
-ggplot(df_colonists, aes(x = age)) +
-  geom_histogram(binwidth = 5, fill = "skyblue", color = "white") +
-  labs(title = "Age Distribution of Colonists",
-       x = "Age",
-       y = "Count") +
-  theme_minimal()
-```
-
-![](lab-13_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
-
-``` r
-set.seed(1)
-roleA <- rep(c("engineer", "scientist", "medic"), 
-             length.out = 100)
-# this works if we want to set a specific number of each role
-roleB <- rep(c("engineer", "scientist", "medic"), 
-             each = 34, 
-             length.out = 100)
-
-roleC <- rep(c("engineer", "scientist", "medic"), 
-             times = c(33, 33, 33), 
-             length.out = 100)
-             
-# if you want to use sampling weights
-roleD <- sample(c("engineer", "scientist", "medic"), 
-                replace = TRUE, 
-                size = 100, prob = c(1,1,1))
-
-# if you want to randomly shuffle
-
-roleE <- sample(roleB, size = 100, replace = FALSE)
-
-## Hey Mason, I am not understanding how the codes above work, so I just did the below, which seems to achieve the same goal we intended?
-
-## adding randomized role variable to df_colonist
-roles <- c("Scientist", "Farmer", "Medic", "Engineer", "Cook")
-
-# Randomly assign one role to each colonist
-set.seed(123)  # for reproducibility
-df_colonists$role <- sample(roles, size = nrow(df_colonists), replace = TRUE)
+    df_colonists <- data.frame(id = 1:100, # this is our id column
+                                age = age ) # add the age column here
 
 
-## in addition to engineer, scientist, and medic, a colony probably needs workers to get the work done, so adding workers to the role variable...
+    ggplot(df_colonists, aes(x = age)) +
+      geom_histogram(binwidth = 5, fill = "skyblue", color = "white") +
+      labs(title = "Age Distribution of Colonists",
+           x = "Age",
+           y = "Count") +
+      theme_minimal()
 
-set.seed(42)
+![](lab-13_files/figure-markdown_strict/unnamed-chunk-1-1.png)
 
-# create roles (25 of each for 100 people)
-roles <- rep(c("Engineer", "Worker", "Medic", "Scientist"), each = 25)
+    set.seed(1)
+    roleA <- rep(c("engineer", "scientist", "medic"), 
+                 length.out = 100)
+    # this works if we want to set a specific number of each role
+    roleB <- rep(c("engineer", "scientist", "medic"), 
+                 each = 34, 
+                 length.out = 100)
 
-# randomly shuffle
-df_colonists$role <- sample(roles)
+    roleC <- rep(c("engineer", "scientist", "medic"), 
+                 times = c(33, 33, 33), 
+                 length.out = 100)
+                 
+    # if you want to use sampling weights
+    roleD <- sample(c("engineer", "scientist", "medic"), 
+                    replace = TRUE, 
+                    size = 100, prob = c(1,1,1))
+
+    # if you want to randomly shuffle
+
+    roleE <- sample(roleB, size = 100, replace = FALSE)
+
+    ## Hey Mason, I am not understanding how the codes above work, so I just did things below, which seems to achieve the same goal we intended?
 
 
-## create the MARSGAR variable
+    ## in addition to engineer, scientist, and medic, a colony probably needs workers to get the work done, so adding workers to the role variable...
 
-set.seed(123)
+    set.seed(42)
 
-df_colonists$marsgar <- runif(100, min = 0, max = 100)
-```
+    # create roles (25 of each for 100 people)
+    roles <- rep(c("Engineer", "Worker", "Medic", "Scientist"), each = 25)
+
+    # randomly shuffle
+    df_colonists$role <- sample(roles)
+
+
+    ## create the MARSGAR variable
+
+    set.seed(123)
+
+    df_colonists$marsgar <- runif(100, min = 0, max = 100)
 
 ### Exercise 2
 
 \#creating variables that have specific correlations
 
-``` r
-# Simulate technical skills based on age
+    # Simulate technical skills based on age
 
-# Set the seed for reproducibility
-set.seed(123)
+    # Set the seed for reproducibility
+    set.seed(123)
 
-# Create a variable for technical skills
-df_colonists$technical_skills <- 2 * df_colonists$age + rnorm(100, mean = 0, sd = 1)
+    # Create a variable for technical skills
+    df_colonists$technical_skills <- 2 * df_colonists$age + rnorm(100, mean = 0, sd = 1)
 
-# visualize the relationship
+    # visualize the relationship
 
-ggplot(df_colonists, aes(x = age, y = technical_skills)) +
-  geom_jitter(color = "purple", size = 1.5) +
-  geom_smooth(method = "lm", color = "black") +
-  labs(title = "Scatter Plot of Colonist Age and technical skills",
-       x = "Age",
-       y = "Skills") +
-  theme_minimal()
-```
+    ggplot(df_colonists, aes(x = age, y = technical_skills)) +
+      geom_jitter(color = "purple", size = 1.5) +
+      geom_smooth(method = "lm", color = "black") +
+      labs(title = "Scatter Plot of Colonist Age and technical skills",
+           x = "Age",
+           y = "Skills") +
+      theme_minimal()
 
     ## `geom_smooth()` using formula = 'y ~ x'
 
-![](lab-13_files/figure-gfm/unnamed-chunk-3-1.png)<!-- --> Engineer
+![](lab-13_files/figure-markdown_strict/unnamed-chunk-3-1.png) Engineer
 probably have the highest problem solving abilities, since solving
 problem is really a large part of their job… Then scientist and medic
 have second and third highest problem solving abilities, followed by
-workers, who need more instructions to get work done.
+workers, who need more instructions to get work done. I assume the sd
+across all 4 roles are the same, as the variance within each role
+population should probably be the same.
 
-``` r
-##since I have 4 levels in role...
+    ##since I have 4 levels in role...
 
-set.seed(123)
-df_colonists$problem_solving[df_colonists$role == "Engineer"]  <- rnorm(sum(df_colonists$role == "Engineer"),  mean = 100, sd = 10)
-df_colonists$problem_solving[df_colonists$role == "Scientist"] <- rnorm(sum(df_colonists$role == "Scientist"), mean = 80,  sd = 10)
-df_colonists$problem_solving[df_colonists$role == "Medic"]     <- rnorm(sum(df_colonists$role == "Medic"),     mean = 70,  sd = 10)
-df_colonists$problem_solving[df_colonists$role == "Worker"]    <- rnorm(sum(df_colonists$role == "Worker"),    mean = 60,  sd = 10)
-```
+    set.seed(123)
+    df_colonists$problem_solving[df_colonists$role == "Engineer"]  <- rnorm(sum(df_colonists$role == "Engineer"),  mean = 100, sd = 10)
+    df_colonists$problem_solving[df_colonists$role == "Scientist"] <- rnorm(sum(df_colonists$role == "Scientist"), mean = 80,  sd = 10)
+    df_colonists$problem_solving[df_colonists$role == "Medic"]     <- rnorm(sum(df_colonists$role == "Medic"),     mean = 70,  sd = 10)
+    df_colonists$problem_solving[df_colonists$role == "Worker"]    <- rnorm(sum(df_colonists$role == "Worker"),    mean = 60,  sd = 10)
 
 ### Exercise 3
 
-\#stimulate data using multivariate rnorm =\> mvrnorm (MASS)
+\#stimulate data using multivariate rnorm =&gt; mvrnorm (MASS)
 
-``` r
-?mvrnorm
+    ?mvrnorm
 
-mean_traits <- c(50, 50)
-cov_matrix <- matrix(c(100, 50, 
-                       50, 100), ncol = 2)
+    mean_traits <- c(50, 50)
+    cov_matrix <- matrix(c(100, 50, 
+                           50, 100), ncol = 2)
 
-# Generate correlated data
+    # Generate correlated data
 
-traits_data <- mvrnorm(n = 100, mu = mean_traits, Sigma = cov_matrix, empirical = FALSE)
+    traits_data <- mvrnorm(n = 100, mu = mean_traits, Sigma = cov_matrix, empirical = FALSE)
 
-colnames(traits_data) <- c("resilience", "agreeableness")
+    colnames(traits_data) <- c("resilience", "agreeableness")
 
-df_colonists <- cbind(df_colonists, traits_data)
-```
+    df_colonists <- cbind(df_colonists, traits_data)
 
 # stimulating Big Five
 
-``` r
-  cor_matrix_bigfive <- matrix(c(
-  1.0000, 0.2599, 0.1972, 0.1860, 0.2949,
-  0.2599, 1.0000, 0.1576, 0.2306, 0.0720,
-  0.1972, 0.1576, 1.0000, 0.2866, 0.1951,
-  0.1860, 0.2306, 0.2866, 1.0000, 0.1574,
-  0.2949, 0.0720, 0.1951, 0.1574, 1.0000
-  ), nrow=5, ncol=5, byrow=TRUE,
-  dimnames=list(c("EX", "ES", "AG", "CO", "OP"), 
-        c("EX", "ES", "AG", "CO", "OP")))
+      cor_matrix_bigfive <- matrix(c(
+      1.0000, 0.2599, 0.1972, 0.1860, 0.2949,
+      0.2599, 1.0000, 0.1576, 0.2306, 0.0720,
+      0.1972, 0.1576, 1.0000, 0.2866, 0.1951,
+      0.1860, 0.2306, 0.2866, 1.0000, 0.1574,
+      0.2949, 0.0720, 0.1951, 0.1574, 1.0000
+      ), nrow=5, ncol=5, byrow=TRUE,
+      dimnames=list(c("EX", "ES", "AG", "CO", "OP"), 
+            c("EX", "ES", "AG", "CO", "OP")))
 
-# Generate correlated data
-mu_bigfive <- rep(0, 5)
+    # Generate correlated data
+    mu_bigfive <- rep(0, 5)
 
-big_five_data <- mvrnorm(n = 100, mu = mu_bigfive, Sigma = cor_matrix_bigfive, empirical = FALSE)
+    big_five_data <- mvrnorm(n = 100, mu = mu_bigfive, Sigma = cor_matrix_bigfive, empirical = FALSE)
 
-colnames(big_five_data) <- c("openness", "agreeableness", "conscientiousness", "extraversion", "neuroticism") ## this agreeableness here will be agreeableness.1, since we had another agreeableness before
+    colnames(big_five_data) <- c("openness", "agreeableness", "conscientiousness", "extraversion", "neuroticism") ## this agreeableness here will be agreeableness.1, since we had another agreeableness before
 
-df_colonists <- cbind(df_colonists, big_five_data)
-```
+    df_colonists <- cbind(df_colonists, big_five_data)
 
 ### Excercise 4
 
 \#replicate the colonies
 
-``` r
-set.seed(12)
+    set.seed(12)
 
-# simulate 100 planets
-colonies_list <- replicate(
-  n = 100,
-  expr = {
-    scores <- mvrnorm(n = 100, mu = mu_bigfive, Sigma = cor_matrix_bigfive)
-    df <- as.data.frame(scores)
-    colnames(df) <- c("Extraversion", "Neurotism", 
-                      "Agreeableness", "Conscientiousness", "Openness")
-    return(df)
-  },
-  simplify = FALSE
-)
+    # simulate 100 planets
+    colonies_list <- replicate(
+      n = 100,
+      expr = {
+        scores <- mvrnorm(n = 100, mu = mu_bigfive, Sigma = cor_matrix_bigfive)
+        df <- as.data.frame(scores)
+        colnames(df) <- c("Extraversion", "Neurotism", 
+                          "Agreeableness", "Conscientiousness", "Openness")
+        return(df)
+      },
+      simplify = FALSE
+    )
 
-df_all <- bind_rows(
-  lapply(1:100, function(i) {
-    colonies_list[[i]] %>%
-      mutate(planet = i, colonist_id = 1:100)
-  })
-)
+    df_all <- bind_rows(
+      lapply(1:100, function(i) {
+        colonies_list[[i]] %>%
+          mutate(planet = i, colonist_id = 1:100)
+      })
+    )
 
-## extract sd and mean
-summary_df <- df_all %>%
-  group_by(planet) %>%
-  summarise(
-    mean_extraversion = mean(Extraversion),
-    sd_extraversion = sd(Extraversion),
-    correlation_with_openness = cor(Extraversion, Openness)
-  )
+    ## extract sd and mean
+    summary_df <- df_all %>%
+      group_by(planet) %>%
+      summarise(
+        mean_extraversion = mean(Extraversion),
+        sd_extraversion = sd(Extraversion),
+        correlation_with_openness = cor(Extraversion, Openness)
+      )
 
-print(summary_df)
-```
+    print(summary_df)
 
     ## # A tibble: 100 × 4
     ##    planet mean_extraversion sd_extraversion correlation_with_openness
@@ -230,15 +204,13 @@ given correlation of 0.2949, and the more sample we randomly draw from
 the population, the more this distribution is going to resemble a normal
 distribution.
 
-``` r
-ggplot(summary_df, aes(x = correlation_with_openness)) +
-  geom_histogram(binwidth = 0.02, fill = "skyblue", color = "white") +
-  labs(
-    title = "Distribution of Correlations Between Extraversion and Openness",
-    x = "Correlation Coefficient (r)",
-    y = "Number of Colonies"
-  ) +
-  theme_minimal()
-```
+    ggplot(summary_df, aes(x = correlation_with_openness)) +
+      geom_histogram(binwidth = 0.02, fill = "skyblue", color = "white") +
+      labs(
+        title = "Distribution of Correlations Between Extraversion and Openness",
+        x = "Correlation Coefficient (r)",
+        y = "Number of Colonies"
+      ) +
+      theme_minimal()
 
-![](lab-13_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](lab-13_files/figure-markdown_strict/unnamed-chunk-8-1.png)
